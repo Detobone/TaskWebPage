@@ -9,9 +9,6 @@ window.addEventListener("load", function () {
   const formCrearTarea = document.querySelector(".nueva-tarea");
   const tareasPendientes = document.querySelector(".tareas-pendientes");
   const tareasTerminadas = document.querySelector(".tareas-terminadas");
-  const contadorTareasTerminadas = document.querySelector(
-    ".cantidad-finalizadas"
-  );
 
   // console.log("Soy userName: ", userName);
 
@@ -104,6 +101,21 @@ window.addEventListener("load", function () {
     // filtramos las terminadas
     const listadoTareasTerminadas = listado.filter((item) => item.completed);
     const listadoTareasPendientes = listado.filter((item) => !item.completed);
+
+    const contadorTareasPendientes = document.querySelector(
+      "#cantidad-pendientes"
+    );
+    const contadorTareasTerminadas = document.querySelector(
+      "#cantidad-finalizadas"
+    );
+
+    console.log(
+      "SOY LISTADO DE TAREAS PENDIENTES:" +
+        listado.filter((item) => !item.completed).length
+    );
+
+    contadorTareasPendientes.innerHTML = listadoTareasPendientes.length;
+    contadorTareasTerminadas.innerHTML = listadoTareasTerminadas.length;
 
     console.log("Pendientes:");
     console.log(listadoTareasPendientes);
