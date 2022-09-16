@@ -14,24 +14,25 @@ window.addEventListener("load", function () {
   /* -------------------------------------------------------------------------- */
   form.addEventListener("submit", function (event) {
     event.preventDefault();
+    let wrongPassword = confirmarContraseña.value;
     //-------- PENDIENTE DE HACER VALIDACIÓN DE LOS CAMPOS DEL FORM ------
-    /*   if (contraseña.value != confirmarContraseña.value) {
-      confirmarContraseña.ariaPlaceholder =
-        "La contraseña no coincide con este campo. Verificalo";
-      setTimeout(() => (confirmarContraseña.ariaPlaceholder = ""), 25000);
+    if (contraseña.value != confirmarContraseña.value) {
+      confirmarContraseña.value = "";
+      confirmarContraseña.placeholder =
+        "Las contraseñas no coincide. Verificalas";
+    } else {
+      nombre.ariaPlaceholder =
+        contraseña.value === null ?? console.log("Submit del form de registro");
+
+      const userSignUp = {
+        firstName: nombre.value,
+        lastName: apellido.value,
+        email: email.value,
+        password: contraseña.value,
+      };
+
+      realizarRegister(userSignUp);
     }
-
-    nombre.ariaPlaceholder =
-      contraseña.value === null ?? console.log("Submit del form de registro");
- */
-    const userSignUp = {
-      firstName: nombre.value,
-      lastName: apellido.value,
-      email: email.value,
-      password: contraseña.value,
-    };
-
-    realizarRegister(userSignUp);
   });
 
   /* -------------------------------------------------------------------------- */

@@ -56,8 +56,6 @@ window.addEventListener("load", function () {
       .then((information) => information.json())
       .then((datos) => {
         console.log("Soy la solicitud de tareas: " + datos);
-
-        //Aqui debo llamar a renderizarTareas
         renderizarTareas(datos);
       });
   }
@@ -86,10 +84,12 @@ window.addEventListener("load", function () {
       .then((information) => information.json())
       .then((data) => {
         console.log("Respuesta de creación tarea: " + data);
-        rederizar = consultarTareas();
+        limpiarYRenderizar();
       })
       .then(() => renderizarTareas(rederizar))
       .catch((error) => console.log(error));
+
+    formCrearTarea.reset();
   });
 
   /* -------------------------------------------------------------------------- */
@@ -162,9 +162,18 @@ window.addEventListener("load", function () {
   /* -------------------------------------------------------------------------- */
   /*                  FUNCIÓN 6 - Cambiar estado de tarea [PUT]                 */
   /* -------------------------------------------------------------------------- */
+
+  // limpiarYRenderizar limpia el contenido del HTML para evitar que la lista de tareas aparezca duplicada.
+  function limpiarYRenderizar() {
+    tareasPendientes.innerHTML = "";
+    tareasTerminadas.innerHTML = "";
+    renderizar = consultarTareas();
+  }
+
   function botonesCambioEstado() {
     const changeTaskStatus = document.querySelectorAll(".change");
     const jsonObject3 = { ...jsonObject };
+    jsonObject3.method = "PUT";
     let renderizar;
 
     console.log(changeTaskStatus);
@@ -190,17 +199,16 @@ window.addEventListener("load", function () {
                 : (data.completed = true),
             };
             jsonObject3.body = JSON.stringify(taskFormat);
-            jsonObject3.method = "PUT";
+            // jsonObject3.method = "PUT";
             // CON EL SEGUNDO FETCH PIDO QUE SE ACTUALICE LA INFORMACION DE LA TAREA
             fetch(url, jsonObject3)
               .then((data) => data.json())
               .then((updatedData) => {
                 console.log("Soy UPDATED_DATA: " + updatedData);
-                tareasPendientes.innerHTML = "";
-                tareasTerminadas.innerHTML = ""; // Se limpia el contenido del HTML para evitar que la lista de tarea aparezca duplicada.
-                renderizar = consultarTareas();
+                limpiarYRenderizar();
               })
-              .then(() => renderizarTareas(renderizar));
+              .then(() => renderizarTareas(renderizar))
+              .catch((error) => console.log(error));
           });
       });
     }
@@ -232,11 +240,9 @@ window.addEventListener("load", function () {
           .then((information) => information.json())
           .then((data) => {
             console.log("RESPUESTA ELIMINACIÓN TAREA:" + data);
-            tareasPendientes.innerHTML = "";
-            tareasTerminadas.innerHTML = ""; // Se limpia el contenido del HTML para evitar que la lista de tarea aparezca duplicada.
-            renderizar = consultarTareas().then(() =>
-              renderizarTareas(renderizar)
-            );
+            limpiarYRenderizar()
+              .then(() => renderizarTareas(renderizar))
+              .catch((error) => console.log(error));
           });
       });
     }
